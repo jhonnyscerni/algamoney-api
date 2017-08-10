@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.algaworks.algamoneyapi.model.Categoria;
 import com.algaworks.algamoneyapi.repository.CategoriaRepository;
+import com.mysql.fabric.Response;
 
 @RestController
 @RequestMapping("/categorias")
@@ -45,8 +46,10 @@ public class CategoriaResource {
 	}
 	
 	@GetMapping("/{codigo}")
-	public Categoria buscarPeloCodigo(@PathVariable Long codigo){
-		return categoriaRepository.findOne(codigo);
+	public ResponseEntity<?> buscarPeloCodigo(@PathVariable Long codigo){
+		Categoria categoriaRetornada = categoriaRepository.findOne(codigo);
+		
+		return categoriaRetornada != null ? ResponseEntity.ok(categoriaRetornada) : ResponseEntity.notFound().build();
 	}
 	
 }
